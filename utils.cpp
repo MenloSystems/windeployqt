@@ -422,7 +422,7 @@ const char *qmakeInfixKey = "QT_INFIX";
 
 QMap<QString, QString> queryQtPaths(const QString &qtpathsBinary, QString *errorMessage)
 {
-    const QString binary = !qtpathsBinary.isEmpty() ? qtpathsBinary : QStringLiteral("qtpaths");
+    const QString binary = !qtpathsBinary.isEmpty() ? qtpathsBinary : QStringLiteral("qtpaths6");
     QByteArray stdOut;
     QByteArray stdErr;
     unsigned long exitCode = 0;

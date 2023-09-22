@@ -507,10 +507,6 @@ static inline int parseArguments(const QStringList &arguments, QCommandLineParse
     options->systemDxc = !parser->isSet(noSystemDxcOption);
     options->quickImports = !parser->isSet(noQuickImportOption);
 
-    // default to deployment of compiler runtime for windows desktop configurations
-    if (options->platform == WindowsDesktopMinGW || options->platform == WindowsDesktopMsvc
-            || parser->isSet(compilerRunTimeOption))
-        options->compilerRunTime = true;
     if (parser->isSet(noCompilerRunTimeOption))
         options->compilerRunTime = false;
 
@@ -1000,7 +996,7 @@ static bool deployTranslations(const QString &sourcePath, const ModuleBitset &us
     // Run lconvert to concatenate all files into a single named "qt_<prefix>.qm" in the application folder
     // Use QT_INSTALL_TRANSLATIONS as working directory to keep the command line short.
     const QString absoluteTarget = QFileInfo(target).absoluteFilePath();
-    const QString binary = QStringLiteral("lconvert");
+    const QString binary = QStringLiteral("lconvert-qt6");
     QStringList arguments;
     for (const QString &prefix : std::as_const(prefixes)) {
         arguments.clear();
@@ -1128,7 +1124,7 @@ static QStringList compilerRunTimeLibs(const QString &qtBinDir, Platform platfor
     QStringList result;
     switch (platform) {
     case WindowsDesktopMinGW: {
-        const QStringList minGWRuntimes = { "*gcc_"_L1, "*stdc++"_L1, "*winpthread"_L1 };
+        const QStringList minGWRuntimes = { "*gcc_s_"_L1, "*stdc++"_L1, "*winpthread"_L1 };
         result.append(findMinGWRuntimePaths(qtBinDir, platform, minGWRuntimes));
         break;
     }
@@ -1306,6 +1302,7 @@ static DeployResult deploy(const Options &options, const QMap<QString, QString> 
         return result;
     }
 
+#if 0
     // Some Windows-specific checks: Qt5Core depends on ICU when configured with "-icu". Other than
     // that, Qt5WebKit has a hard dependency on ICU.
     if (options.platform.testFlag(WindowsBased))  {
@@ -1345,6 +1342,7 @@ static DeployResult deploy(const Options &options, const QMap<QString, QString> 
             } // !icuLibs.isEmpty()
         } // Qt6Core/Qt6WebKit
     } // Windows
+#endif
 
     // Scan Quick2 imports
     QmlImportScanResult qmlScanResult;
