@@ -1678,6 +1678,15 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    if (const auto libexecPath = qtpathsVariables.value(
+                            QStringLiteral("QT_INSTALL_LIBEXECS")).toLatin1();
+        !libexecPath.isEmpty() && !path.contains(libexecPath))
+    {
+        path.prepend(QDir::listSeparator().toLatin1());
+        path.prepend(libexecPath);
+        qputenv("PATH", path);
+    }
+
     // Read the Qt module information from the Qt installation directory.
     const QString modulesDir
             = qtpathsVariables.value(QLatin1String("QT_INSTALL_ARCHDATA"))
