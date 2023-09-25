@@ -27,3 +27,7 @@ target_compile_definitions(windeployqt
         QT_NO_CAST_TO_ASCII
         QT_NO_FOREACH
 )
+
+install(TARGETS windeployqt
+        RUNTIME DESTINATION bin
+)
