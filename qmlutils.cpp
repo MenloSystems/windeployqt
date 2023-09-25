@@ -113,6 +113,14 @@ QmlImportScanResult runQmlImportScanner(const QString &directory, const QStringL
                 module.className = object.value(QStringLiteral("classname")).toString();
                 module.sourcePath = path;
                 module.relativePath = object.value(QStringLiteral("relativePath")).toString();
+                const auto components = object.value(QStringLiteral("components")).toArray();
+                for (const auto &component : components) {
+                    module.components.append(component.toString());
+                }
+                const auto scripts = object.value(QStringLiteral("scripts")).toArray();
+                for (const auto &script : scripts) {
+                    module.scripts.append(script.toString());
+                }
                 result.modules.append(module);
                 findFileRecursion(QDir(path), Platform(platform), debugMatchMode, &result.plugins);
             }

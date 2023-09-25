@@ -20,6 +20,8 @@ struct QmlImportScanResult {
         QString className;
         QString sourcePath;
         QString relativePath;
+        QStringList components;
+        QStringList scripts;
     };
 
     void append(const QmlImportScanResult &other);
